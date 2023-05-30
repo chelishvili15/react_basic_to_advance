@@ -12,6 +12,6 @@ export const Box = ({value, onClick}) => {
 }
 
 Box.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   onClick: PropTypes.func
 }
