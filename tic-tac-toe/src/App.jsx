@@ -2,6 +2,7 @@ import { useState } from "react"
 
 import { Board } from "./components/Board"
 import { Scores } from "./components/Scores"
+import { Reset } from "./components/Reset"
 
 function App() {
   const winPositions = [
@@ -17,6 +18,7 @@ function App() {
   const [board, setBoard] = useState(Array(9).fill(null))
   const [xPlayed, setXPlayed] = useState(true)
   const [scores, setScores] = useState({xScore: 0, oScore: 0})
+  const [gameOver, setGameOver] = useState(false)
 
   const handleBoardClick = (boxIndex) => {
     if (!board[boxIndex]) {
@@ -36,11 +38,11 @@ function App() {
         if (checkWinner(updateBoard) === 'X') {
           xScore += 1
           setScores({ xScore, oScore })
-          setTimeout(() => resetBoard() ,100)
+          setGameOver(true)
         } else if (checkWinner(updateBoard) === 'O') {
           oScore += 1
           setScores({ xScore, oScore })
-          setTimeout(() => resetBoard() ,100)
+          setGameOver(true)
         }
       }
 
@@ -61,6 +63,7 @@ function App() {
 
   const resetBoard = () => {
     const resetBoard = board.map(() => null)
+    setGameOver(false)
     setBoard(resetBoard)
   }
 
@@ -70,7 +73,8 @@ function App() {
       <span className="text-2xl">Tic Tac Toe</span>
       <div>
         <Scores xScore={scores.xScore} oScore={scores.oScore} isActiveX={xPlayed} />
-        <Board board={board} onClick={handleBoardClick} />
+        <Board board={board} onClick={!gameOver && handleBoardClick} />
+        <Reset onClick={resetBoard} />
       </div>
     </div>
   )
